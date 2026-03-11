@@ -6,7 +6,7 @@ namespace TaskManager.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TaskController : ControllerBase
+    public class TasksController : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
