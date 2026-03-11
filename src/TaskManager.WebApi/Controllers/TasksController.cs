@@ -18,6 +18,14 @@ namespace TaskManager.WebApi.Controllers
             return Ok(tasks);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+
+            return Ok(task);
+        }
+
         [HttpPost]
         public IActionResult Post(TaskModel model)
         {
