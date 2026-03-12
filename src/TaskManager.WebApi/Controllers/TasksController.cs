@@ -13,29 +13,6 @@ namespace TaskManager.WebApi.Controllers
         IValidator<NewTaskInputModel> createValidator,
         IValidator<EditTaskInputModel> editValidator) : ControllerBase
     {
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Put(int id, EditTaskInputModel model)
-        {
-            var task = context.Tasks.SingleOrDefault(t => t.Id == id);
-            if(task == null)
-            {
-                return NotFound();
-            }
-
-            var validationResult = editValidator.Validate(model);
-            if(!validationResult.IsValid)
-            {
-                return BadRequest(validationResult);
-            }
-
-            task.Update(model.Title, model.Description, model.ExpiresDate, model.Status);
-            context.SaveChanges();
-
-            return NoContent();
-        }
-
         [HttpPut("{id}/start")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
