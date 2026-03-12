@@ -14,15 +14,6 @@ namespace TaskManager.WebApi.Controllers
         IValidator<EditTaskInputModel> editValidator) : ControllerBase
     {
 
-        [HttpGet]
-        [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
-        public IActionResult Get()
-        {
-            var tasks = context.Tasks.ToList();
-
-            return Ok(tasks);
-        }
-
         [HttpGet("status/{status}")]
         [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
         public IActionResult GetByStatus(TaskStatusEnum status)
