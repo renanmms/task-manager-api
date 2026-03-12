@@ -13,22 +13,5 @@ namespace TaskManager.WebApi.Controllers
         IValidator<NewTaskInputModel> createValidator,
         IValidator<EditTaskInputModel> editValidator) : ControllerBase
     {
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
-        {
-            var task = context.Tasks.SingleOrDefault(t => t.Id == id);
-            if(task == null)
-            {
-                return NotFound();
-            }
-
-            context.Tasks.Remove(task);
-            context.SaveChanges();
-
-            return NoContent();
-        }
     }
 }
