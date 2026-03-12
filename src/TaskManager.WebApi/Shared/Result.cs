@@ -17,7 +17,7 @@ namespace TaskManager.WebApi.Shared
         private Result(bool isSuccess, TValue value)
             : base(isSuccess, value) { }
 
-        public static Result<TValue> Success<TValue>(TValue value) => new(true, value);
+        public static Result<TValue> Success(TValue value) => new(true, value);
         public static Result<TValue> Failure(Error error) => new(false, error);
     }
 }
