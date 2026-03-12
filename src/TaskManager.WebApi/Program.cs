@@ -22,9 +22,16 @@ builder.Services.AddSwaggerGen(options =>
         Example = new OpenApiString(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))
     });
 });
-
+// TODO: Remover quando finalizar
 builder.Services.AddScoped<IValidator<NewTaskInputModel>, NewTaskInputModelValidator>();
 builder.Services.AddScoped<IValidator<EditTaskInputModel>, EditTaskInputModelValidator>();
+
+var assembly = typeof(Program).Assembly;
+
+builder.Services.AddMediatR(config => 
+    config.RegisterServicesFromAssembly(assembly));
+
+builder.Services.AddValidatorsFromAssembly(assembly);
 
 builder.Services.AddDbContext<TaskManagerDbContext>(opt => opt.UseInMemoryDatabase("TaskManagerDb"));
 
