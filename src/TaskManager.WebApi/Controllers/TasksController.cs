@@ -41,39 +41,6 @@ namespace TaskManager.WebApi.Controllers
             return Ok(tasks);
         }
 
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(TaskModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
-        {
-            var task = context.Tasks.SingleOrDefault(t => t.Id == id);
-            if(task == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(task);
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Post(NewTaskInputModel model)
-        {
-            var validationResult = createValidator.Validate(model);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult);
-            }
-
-            var task = model.ToEntity();
-
-            context.Tasks.Add(task);
-            context.SaveChanges();
-
-            return CreatedAtAction(nameof(GetById), new {task.Id}, model);
-        }
-
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
