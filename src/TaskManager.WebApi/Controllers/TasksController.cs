@@ -13,15 +13,12 @@ namespace TaskManager.WebApi.Controllers
         IValidator<NewTaskInputModel> createValidator,
         IValidator<EditTaskInputModel> editValidator) : ControllerBase
     {
-        private readonly TaskManagerDbContext _context = context;
-        private readonly IValidator<NewTaskInputModel> _createValidator = createValidator;
-        private readonly IValidator<EditTaskInputModel> _editValidator = editValidator;
 
         [HttpGet]
         [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            var tasks = _context.Tasks.ToList();
+            var tasks = context.Tasks.ToList();
 
             return Ok(tasks);
         }
@@ -30,7 +27,7 @@ namespace TaskManager.WebApi.Controllers
         [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
         public IActionResult GetByStatus(TaskStatusEnum status)
         {
-            var tasks = _context.Tasks.Where(t => t.Status == status);
+            var tasks = context.Tasks.Where(t => t.Status == status);
 
             return Ok(tasks);
         }
@@ -39,7 +36,7 @@ namespace TaskManager.WebApi.Controllers
         [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
         public IActionResult GetByExpiresDate(DateOnly expiresDate)
         {
-            var tasks = _context.Tasks.Where(t => DateOnly.FromDateTime(t.ExpiresAt) == expiresDate);
+            var tasks = context.Tasks.Where(t => DateOnly.FromDateTime(t.ExpiresAt) == expiresDate);
 
             return Ok(tasks);
         }
@@ -49,7 +46,7 @@ namespace TaskManager.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+            var task = context.Tasks.SingleOrDefault(t => t.Id == id);
             if(task == null)
             {
                 return NotFound();
@@ -71,8 +68,8 @@ namespace TaskManager.WebApi.Controllers
 
             var task = model.ToEntity();
 
-            _context.Tasks.Add(task);
-            _context.SaveChanges();
+            context.Tasks.Add(task);
+            context.SaveChanges();
 
             return CreatedAtAction(nameof(GetById), new {task.Id}, model);
         }
@@ -82,20 +79,20 @@ namespace TaskManager.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Put(int id, EditTaskInputModel model)
         {
-            var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+            var task = context.Tasks.SingleOrDefault(t => t.Id == id);
             if(task == null)
             {
                 return NotFound();
             }
 
-            var validationResult = _editValidator.Validate(model);
+            var validationResult = editValidator.Validate(model);
             if(!validationResult.IsValid)
             {
                 return BadRequest(validationResult);
             }
 
             task.Update(model.Title, model.Description, model.ExpiresDate, model.Status);
-            _context.SaveChanges();
+            context.SaveChanges();
 
             return NoContent();
         }
@@ -105,14 +102,14 @@ namespace TaskManager.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Start(int id)
         {
-            var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+            var task = context.Tasks.SingleOrDefault(t => t.Id == id);
             if(task == null)
             {
                 return NotFound();
             }
 
             task.Start();
-            _context.SaveChanges();
+            context.SaveChanges();
 
             return NoContent();
         }
@@ -122,14 +119,14 @@ namespace TaskManager.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Finish(int id)
         {
-             var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+             var task = context.Tasks.SingleOrDefault(t => t.Id == id);
             if(task == null)
             {
                 return NotFound();
             }
 
             task.Finish();
-            _context.SaveChanges();
+            context.SaveChanges();
 
             return NoContent();
         }
@@ -139,14 +136,14 @@ namespace TaskManager.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+            var task = context.Tasks.SingleOrDefault(t => t.Id == id);
             if(task == null)
             {
                 return NotFound();
             }
 
-            _context.Tasks.Remove(task);
-            _context.SaveChanges();
+            context.Tasks.Remove(task);
+            context.SaveChanges();
 
             return NoContent();
         }
