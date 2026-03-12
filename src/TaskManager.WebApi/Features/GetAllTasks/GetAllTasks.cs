@@ -23,7 +23,7 @@ namespace TaskManager.WebApi.Features.GetAllTasks
 
     }
 
-    public class GetAllTasks
+    public static class GetAllTasks
     {
         public class Query : IRequest<Result<List<TaskModel>>>
         {

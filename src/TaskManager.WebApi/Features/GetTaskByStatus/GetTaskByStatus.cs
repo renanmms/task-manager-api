@@ -21,10 +21,8 @@ namespace TaskManager.WebApi.Features.GetTaskByStatus
         }
     }
 
-    public class GetTaskByStatus
+    public static class GetTaskByStatus
     {
-
-
         public class Query : IRequest<Result<List<TaskModel>>>
         {
             public TaskStatusEnum Status { get; set; }

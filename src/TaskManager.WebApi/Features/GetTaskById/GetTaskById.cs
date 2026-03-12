@@ -29,7 +29,7 @@ namespace TaskManager.WebApi.Features.GetTaskById
         }
     }
 
-    public class GetTaskById
+    public static class GetTaskById
     {
         public class Query : IRequest<Result<TaskModel>>
         {
