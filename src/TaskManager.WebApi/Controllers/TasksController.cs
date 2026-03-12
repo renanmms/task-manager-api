@@ -12,6 +12,7 @@ namespace TaskManager.WebApi.Controllers
         private readonly TaskManagerDbContext _context = context;
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
             var tasks = _context.Tasks.ToList();
@@ -20,6 +21,7 @@ namespace TaskManager.WebApi.Controllers
         }
 
         [HttpGet("status/{status}")]
+        [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
         public IActionResult GetByStatus(TaskStatusEnum status)
         {
             var tasks = _context.Tasks.Where(t => t.Status == status);
@@ -28,6 +30,7 @@ namespace TaskManager.WebApi.Controllers
         }
 
         [HttpGet("expires-date/{expiresDate}")]
+        [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
         public IActionResult GetByExpiresDate(DateOnly expiresDate)
         {
             var tasks = _context.Tasks.Where(t => DateOnly.FromDateTime(t.ExpiresAt) == expiresDate);
@@ -36,6 +39,8 @@ namespace TaskManager.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(TaskModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
             var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
@@ -48,6 +53,7 @@ namespace TaskManager.WebApi.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public IActionResult Post(TaskModel model)
         {
             _context.Tasks.Add(model);
@@ -57,6 +63,8 @@ namespace TaskManager.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Put(int id, EditTaskInputModel model)
         {
             var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
@@ -72,6 +80,8 @@ namespace TaskManager.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
             var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
