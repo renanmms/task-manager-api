@@ -18,6 +18,22 @@ namespace TaskManager.WebApi.Controllers
             return Ok(tasks);
         }
 
+        [HttpGet("status/{status}")]
+        public IActionResult GetByStatus(TaskStatusEnum status)
+        {
+            var tasks = _context.Tasks.Where(t => t.Status == status);
+
+            return Ok(tasks);
+        }
+
+        [HttpGet("expires-date/{expiresDate}")]
+        public IActionResult GetByExpiresDate(DateOnly expiresDate)
+        {
+            var tasks = _context.Tasks.Where(t => DateOnly.FromDateTime(t.ExpiresAt) == expiresDate);
+
+            return Ok(tasks);
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
