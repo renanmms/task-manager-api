@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.WebApi.DTOs;
 using TaskManager.WebApi.Models;
@@ -7,9 +8,10 @@ namespace TaskManager.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TasksController(TaskManagerDbContext context) : ControllerBase
+    public class TasksController(TaskManagerDbContext context, IValidator<NewTaskInputModel> validator) : ControllerBase
     {
         private readonly TaskManagerDbContext _context = context;
+        private readonly IValidator<NewTaskInputModel> _validator = validator;
 
         [HttpGet]
         [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
@@ -54,12 +56,21 @@ namespace TaskManager.WebApi.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult Post(TaskModel model)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Post(NewTaskInputModel model)
         {
-            _context.Tasks.Add(model);
+            var validationResult = _validator.Validate(model);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult);
+            }
+
+            var task = model.ToEntity();
+
+            _context.Tasks.Add(task);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetById), new {model.Id}, model);
+            return CreatedAtAction(nameof(GetById), new {task.Id}, model);
         }
 
         [HttpPut("{id}")]
