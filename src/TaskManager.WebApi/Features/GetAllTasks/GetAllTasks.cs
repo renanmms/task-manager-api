@@ -30,17 +30,12 @@ namespace TaskManager.WebApi.Features.GetAllTasks
 
         }
 
-        internal sealed class Handler : IRequestHandler<GetAllTasks.Query, Result<List<TaskModel>>>
+        internal sealed class Handler(TaskManagerDbContext context) 
+            : IRequestHandler<GetAllTasks.Query, Result<List<TaskModel>>>
         {
-            private readonly TaskManagerDbContext _context;
-            public Handler(TaskManagerDbContext context)
-            {
-                _context = context;
-            }
-
             public async Task<Result<List<TaskModel>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var tasks = await _context.Tasks.ToListAsync();
+                var tasks = await context.Tasks.ToListAsync();
 
                 return Result<List<TaskModel>>.Success(tasks);
             }

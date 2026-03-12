@@ -41,17 +41,12 @@ namespace TaskManager.WebApi.Features.GetTaskById
         }
     }
 
-    internal sealed class Handler : IRequestHandler<GetTaskById.Query, Result<TaskModel>>
+    internal sealed class Handler(TaskManagerDbContext context) 
+        : IRequestHandler<GetTaskById.Query, Result<TaskModel>>
     {
-        private readonly TaskManagerDbContext _context;
-        public Handler(TaskManagerDbContext context)
-        {
-            _context = context;            
-        }
-
         public async Task<Result<TaskModel>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var task = await _context.Tasks.SingleOrDefaultAsync(t => t.Id == request.Id);
+            var task = await context.Tasks.SingleOrDefaultAsync(t => t.Id == request.Id);
 
             if(task == null)
             {
