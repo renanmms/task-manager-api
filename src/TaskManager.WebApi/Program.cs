@@ -24,6 +24,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddScoped<IValidator<NewTaskInputModel>, NewTaskInputModelValidator>();
+builder.Services.AddScoped<IValidator<EditTaskInputModel>, EditTaskInputModelValidator>();
 
 builder.Services.AddDbContext<TaskManagerDbContext>(opt => opt.UseInMemoryDatabase("TaskManagerDb"));
 

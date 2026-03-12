@@ -8,10 +8,14 @@ namespace TaskManager.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TasksController(TaskManagerDbContext context, IValidator<NewTaskInputModel> validator) : ControllerBase
+    public class TasksController(
+        TaskManagerDbContext context,
+        IValidator<NewTaskInputModel> createValidator,
+        IValidator<EditTaskInputModel> editValidator) : ControllerBase
     {
         private readonly TaskManagerDbContext _context = context;
-        private readonly IValidator<NewTaskInputModel> _validator = validator;
+        private readonly IValidator<NewTaskInputModel> _createValidator = createValidator;
+        private readonly IValidator<EditTaskInputModel> _editValidator = editValidator;
 
         [HttpGet]
         [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
@@ -59,7 +63,7 @@ namespace TaskManager.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Post(NewTaskInputModel model)
         {
-            var validationResult = _validator.Validate(model);
+            var validationResult = createValidator.Validate(model);
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult);
@@ -82,6 +86,12 @@ namespace TaskManager.WebApi.Controllers
             if(task == null)
             {
                 return NotFound();
+            }
+
+            var validationResult = _editValidator.Validate(model);
+            if(!validationResult.IsValid)
+            {
+                return BadRequest(validationResult);
             }
 
             task.Update(model.Title, model.Description, model.ExpiresDate, model.Status);
