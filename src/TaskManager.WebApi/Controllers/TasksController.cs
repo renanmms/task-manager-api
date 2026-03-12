@@ -48,7 +48,7 @@ namespace TaskManager.WebApi.Controllers
             _context.Tasks.Add(model);
             _context.SaveChanges();
 
-            return NoContent();
+            return CreatedAtAction(nameof(GetById), new {model.Id}, model);
         }
     }
 }
