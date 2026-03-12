@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TaskManager.WebApi.Models;
 using TaskManager.WebApi.Persistence;
 using TaskManager.WebApi.Shared;
@@ -37,7 +38,7 @@ namespace TaskManager.WebApi.Features.GetTaskByStatus
         {
             public async Task<Result<List<TaskModel>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var tasks = context.Tasks.Where(t => t.Status == request.Status).ToList();
+                var tasks = await context.Tasks.Where(t => t.Status == request.Status).ToListAsync();
 
                 return Result<List<TaskModel>>.Success(tasks);
             }

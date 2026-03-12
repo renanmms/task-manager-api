@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TaskManager.WebApi.Models;
 using TaskManager.WebApi.Persistence;
 using TaskManager.WebApi.Shared;
@@ -37,7 +38,7 @@ namespace TaskManager.WebApi.Features.GetTaskByExpirationDate
         {
             public async Task<Result<List<TaskModel>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var tasks = context.Tasks.Where(t => DateOnly.FromDateTime(t.ExpiresAt) == request.ExpiresAt).ToList();
+                var tasks = await  context.Tasks.Where(t => DateOnly.FromDateTime(t.ExpiresAt) == request.ExpiresAt).ToListAsync();
 
                 return Result<List<TaskModel>>.Success(tasks);
             }
