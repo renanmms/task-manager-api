@@ -39,6 +39,10 @@ namespace TaskManager.WebApi.Controllers
         public IActionResult GetById(int id)
         {
             var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+            if(task == null)
+            {
+                return NotFound();
+            }
 
             return Ok(task);
         }
@@ -56,8 +60,12 @@ namespace TaskManager.WebApi.Controllers
         public IActionResult Put(int id, EditTaskInputModel model)
         {
             var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
-            task?.Update(model.Title, model.Description, model.ExpiresDate, model.Status);
+            if(task == null)
+            {
+                return NotFound();
+            }
 
+            task.Update(model.Title, model.Description, model.ExpiresDate, model.Status);
             _context.SaveChanges();
 
             return NoContent();
