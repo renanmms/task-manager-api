@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.WebApi.DTOs;
 using TaskManager.WebApi.Models;
 using TaskManager.WebApi.Persistence;
 
@@ -49,6 +50,17 @@ namespace TaskManager.WebApi.Controllers
             _context.SaveChanges();
 
             return CreatedAtAction(nameof(GetById), new {model.Id}, model);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, EditTaskInputModel model)
+        {
+            var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+            task?.Update(model.Title, model.Description, model.ExpiresDate, model.Status);
+
+            _context.SaveChanges();
+
+            return NoContent();
         }
     }
 }
