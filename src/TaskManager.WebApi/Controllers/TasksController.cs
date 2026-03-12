@@ -13,16 +13,6 @@ namespace TaskManager.WebApi.Controllers
         IValidator<NewTaskInputModel> createValidator,
         IValidator<EditTaskInputModel> editValidator) : ControllerBase
     {
-
-        [HttpGet("status/{status}")]
-        [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
-        public IActionResult GetByStatus(TaskStatusEnum status)
-        {
-            var tasks = context.Tasks.Where(t => t.Status == status);
-
-            return Ok(tasks);
-        }
-
         [HttpGet("expires-date/{expiresDate}")]
         [ProducesResponseType(typeof(List<TaskModel>), StatusCodes.Status200OK)]
         public IActionResult GetByExpiresDate(DateOnly expiresDate)
