@@ -5,7 +5,7 @@ namespace TaskManager.WebApi.Models
         public int Id { get; set; }
         public string Title { get; set; } = title;
         public string? Description { get; set; }
-        public DateTime? ExpiresAt { get; set; }
+        public DateTime ExpiresAt { get; set; }
         public TaskStatusEnum Status { get; set; } = TaskStatusEnum.Pending;
     }
 
