@@ -1,7 +1,10 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using TaskManager.WebApi.DTOs;
 using TaskManager.WebApi.Persistence;
+using TaskManager.WebApi.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,8 @@ builder.Services.AddSwaggerGen(options =>
         Example = new OpenApiString(DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd"))
     });
 });
+
+builder.Services.AddScoped<IValidator<NewTaskInputModel>, NewTaskInputModelValidator>();
 
 builder.Services.AddDbContext<TaskManagerDbContext>(opt => opt.UseInMemoryDatabase("TaskManagerDb"));
 
