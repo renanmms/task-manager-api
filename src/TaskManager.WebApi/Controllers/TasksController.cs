@@ -62,5 +62,20 @@ namespace TaskManager.WebApi.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+            if(task == null)
+            {
+                return NotFound();
+            }
+
+            _context.Tasks.Remove(task);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
