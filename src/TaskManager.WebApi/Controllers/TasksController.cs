@@ -100,6 +100,40 @@ namespace TaskManager.WebApi.Controllers
             return NoContent();
         }
 
+        [HttpPut("{id}/start")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Start(int id)
+        {
+            var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+            if(task == null)
+            {
+                return NotFound();
+            }
+
+            task.Start();
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}/finish")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Finish(int id)
+        {
+             var task = _context.Tasks.SingleOrDefault(t => t.Id == id);
+            if(task == null)
+            {
+                return NotFound();
+            }
+
+            task.Finish();
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

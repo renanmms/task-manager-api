@@ -22,6 +22,16 @@ namespace TaskManager.WebApi.Models
         public DateTime ExpiresAt { get; set; }
         public TaskStatusEnum Status { get; set; } = TaskStatusEnum.Pending;
 
+        public void Start()
+        {
+            Status = TaskStatusEnum.InProgress;
+        }
+
+        public void Finish()
+        {
+            Status = TaskStatusEnum.Finished;
+        }
+
         public void Update(string title, string description, DateTime expiresAt, TaskStatusEnum status)
         {
             Title = title;
