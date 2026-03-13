@@ -107,3 +107,9 @@ Changes the task status to **In Progress**.
 **PUT** `/api/tasks/{id}/finish`
 
 Changes the task status to **Finished**.
+
+### Delete a task
+
+**DELETE** `/api/tasks/{id}`
+
+Removes the task with the specified ID.
