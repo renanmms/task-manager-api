@@ -108,6 +108,8 @@ Changes the task status to **In Progress**.
 
 Changes the task status to **Finished**.
 
+---
+
 ### Delete a task
 
 **DELETE** `/api/tasks/{id}`
